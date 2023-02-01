@@ -2,6 +2,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
+
 public class StudentClass {
 
 	int rollNo;
@@ -99,5 +101,4 @@ public class StudentClass {
 	public void setPrimAddress(Address primAddress) {
 		this.primAddress = primAddress;
 	}
-
 }

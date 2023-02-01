@@ -3,7 +3,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /*
  * xml based
+ * 
  * annotation+xml based
+ * 
  * java based
  */
 
@@ -21,24 +23,24 @@ public class MainClass {
 	public static void main(String[] args) {
 		
 		System.out.println("spring application");
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-conf.xml");
-		
+		//spring container
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring-conf.xml");
+		//singleton
 		StudentClass studentClass = applicationContext.getBean("student1",StudentClass.class);
-		System.out.println(studentClass.getName());
-		studentClass.getContactNum().forEach(System.out::println);
-		System.out.println("marks of student ");
-		studentClass.getMarks().forEach(System.out::println);
+		//db operation to insert it
+		System.out.println(studentClass.hashCode());
 		
-		studentClass.getAddress().forEach(address -> System.out.println(address.getCity()));
+		StudentClass studentClass2 = applicationContext.getBean("student1",StudentClass.class);
+		System.out.println(studentClass2.hashCode());
 		
-		studentClass.getSubject().forEach(subject -> System.out.println(subject.getName()));
+		//prototype
+		StudentClass studentClass3 = applicationContext.getBean("student2",StudentClass.class);
+		System.out.println(studentClass3.hashCode());
 		
-		System.out.println("marks of each subjects ");
+		StudentClass studentClass4 = applicationContext.getBean("student2",StudentClass.class);
+		System.out.println(studentClass4.hashCode());
 		
-		studentClass.getSubMarks().entrySet().forEach(entry -> 
-								System.out.println(entry.getKey().getName() +" marks is "+entry.getValue()));
-		
-		System.out.println(studentClass.getPrimAddress().getCity());
+		applicationContext.destroy();
 		
 	}
 }
