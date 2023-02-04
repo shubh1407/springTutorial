@@ -1,13 +1,10 @@
 /*
  * annotation+xml based configuration
  */
-package springdemo;
+package com.springdemo;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -20,9 +17,9 @@ interface Shape{
 	
 }
 
-@Component
 class GetShape {
 	
+	int num;
 	
 }
 
@@ -30,13 +27,13 @@ class GetShape {
 @Scope(scopeName = "prototype")
 class Triangle implements Shape{
 
-	@Value("10")
+	@Value("10")  //Setter injection
 	int side1;
 	int side2;
 	int side3;
 
 
-	
+	//Constructor injection
 	public Triangle(@Value("10") int side1, @Value("20") int side2, @Value("40") int side3) {
 		this.side1 = side1;
 		this.side2 = side2;
@@ -76,6 +73,13 @@ class IsocelesTriangle extends Triangle{
 		// TODO Auto-generated constructor stub
 	}
 	
+	@PostConstruct
+	@PreDestroy
+	public void dest() {
+		// TODO Auto-generated method stub
+
+	}
+	
 }
 
 @Component
@@ -113,11 +117,14 @@ class Square extends Rectangle{
 
 public class GeometricalShape {
 
+	private static ApplicationContext applicationContext;
+
 	public static void main(String[] args) {
 		
-		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConf.class);
 		
-		Shape shape = applicationContext.getBean("triangle",Triangle.class);
+		applicationContext = new AnnotationConfigApplicationContext(SpringConf.class);
+		
+		Shape shape = applicationContext.getBean("getTriangle",Triangle.class);
 		shape.getArea();
 		
 		Shape shape2 = applicationContext.getBean("equilTriangle",EquilateralTriangle.class); // new EquilateralTriangle(10); 
@@ -133,7 +140,7 @@ public class GeometricalShape {
 		shape5.getArea();
 		
 		GetShape getShape = applicationContext.getBean("getShape",GetShape.class);
-		
+		System.out.println(getShape.num);
 		
 	}
 }
